@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movieapp/model/custom_movie_model.dart';
 import 'package:movieapp/model/movie_list.dart';
@@ -48,38 +49,64 @@ class HomeController extends GetxController {
   }
 
   Future<void> fetchMovies(
-    String category,
-    RxList<CustomMovieModel> movieList,
-  ) async {
+      String category,
+      RxList<CustomMovieModel> movieList,
+      ) async {
     if (!await NetworkService.hasInternet()) {
+      Get.snackbar(
+        "No Internet Connection",
+        "Please check your internet connection and try again.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
       return;
     }
     isLoading.value = true;
-    final response = await http.get(
-      Uri.parse('${ApiService.apiUrl}/movie/$category?include_adult=false?language=en-US&page=2'),
-      headers: _getHeaders(),
-    );
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      apiMovieList.value = MovieList.fromJson(data);
-      final apiMovieListData = apiMovieList.value?.results;
+    try {
+      final response = await http.get(
+        Uri.parse('${ApiService.apiUrl}/movie/$category?include_adult=false&language=en-US&page=2'),
+        headers: _getHeaders(),
+      );
 
-      // movieList.clear();
-      if (apiMovieListData != null && apiMovieListData.isNotEmpty) {
-        for (int i = 0; i < apiMovieListData.length; i++) {
-          final data = apiMovieListData[i];
-          movieList.add(
-            CustomMovieModel(
-              id: data.id ?? 0,
-              title: data.title ?? '',
-              overview: data.overview ?? '',
-              posterPath: data.posterPath ?? '',
-              releaseDate: data.releaseDate ?? '',
-            ),
-          );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        apiMovieList.value = MovieList.fromJson(data);
+        final apiMovieListData = apiMovieList.value?.results;
+
+        if (apiMovieListData != null && apiMovieListData.isNotEmpty) {
+          for (var data in apiMovieListData) {
+            movieList.add(
+              CustomMovieModel(
+                id: data.id ?? 0,
+                title: data.title ?? '',
+                overview: data.overview ?? '',
+                posterPath: data.posterPath ?? '',
+                releaseDate: data.releaseDate ?? '',
+              ),
+            );
+          }
         }
+      } else {
+        Get.snackbar(
+          "Error ${response.statusCode}",
+          "Something went wrong while fetching movies.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.orange,
+          colorText: Colors.white,
+        );
       }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Failed to load movies. Please try again later.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      debugPrint("fetchMovies Error: $e");
+    } finally {
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 }

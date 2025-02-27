@@ -43,40 +43,70 @@ class MovieSearchController extends GetxController {
     searchResults.clear();
   }
 
-  Future<void> searchMovieList(
-    String movieName,
-  ) async {
+  Future<void> searchMovieList(String movieName) async {
     if (!await NetworkService.hasInternet()) {
+      Get.snackbar(
+        "No Internet Connection",
+        "Please check your internet connection and try again.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
       return;
     }
-    isLoading.value = true;
-    final response = await http.get(
-      Uri.parse(
-          '${ApiService.apiUrl}search/movie?query=$movieName&include_adult=false&language=en-US&page=1'),
-      headers: _getHeaders(),
-    );
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      apiMovieList.value = MovieList.fromJson(data);
-      final apiMovieListData = apiMovieList.value?.results;
 
-      searchResults.clear();
-      if (apiMovieListData != null && apiMovieListData.isNotEmpty) {
-        for (int i = 0; i < apiMovieListData.length; i++) {
-          final data = apiMovieListData[i];
-          searchResults.add(
-            CustomMovieModel(
-              id: data.id ?? 0,
-              title: data.title ?? '',
-              overview: data.overview ?? '',
-              posterPath: data.posterPath ?? '',
-              releaseDate: data.releaseDate ?? '',
-            ),
-          );
+    isLoading.value = true;
+
+    try {
+      final response = await http.get(
+        Uri.parse(
+            '${ApiService.apiUrl}search/movie?query=$movieName&include_adult=false&language=en-US&page=1'),
+        headers: _getHeaders(),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        apiMovieList.value = MovieList.fromJson(data);
+        final apiMovieListData = apiMovieList.value?.results;
+
+        searchResults.clear();
+
+        if (apiMovieListData != null && apiMovieListData.isNotEmpty) {
+          for (var data in apiMovieListData) {
+            searchResults.add(
+              CustomMovieModel(
+                id: data.id ?? 0,
+                title: data.title ?? '',
+                overview: data.overview ?? '',
+                posterPath: data.posterPath ?? '',
+                releaseDate: data.releaseDate ?? '',
+              ),
+            );
+          }
         }
+      } else {
+        // Handle API error response
+        Get.snackbar(
+          "Error ${response.statusCode}",
+          "Failed to fetch search results. Please try again.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.orange,
+          colorText: Colors.white,
+        );
       }
+    } catch (e) {
+      // Handle any errors (network issues, JSON parsing errors, etc.)
+      Get.snackbar(
+        "Error",
+        "Something went wrong while searching. Please try again later.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      debugPrint("searchMovieList Error: $e");
+    } finally {
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 
   @override
