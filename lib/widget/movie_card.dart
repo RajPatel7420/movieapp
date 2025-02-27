@@ -29,7 +29,9 @@ class MovieCard extends StatelessWidget {
       child: Column(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(
+              8,
+            ),
             child: Image.network(
               "https://image.tmdb.org/t/p/original${movie.posterPath}",
               height: posterHeight,
@@ -37,12 +39,16 @@ class MovieCard extends StatelessWidget {
               fit: BoxFit.fill,
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(
+            height: 5,
+          ),
           isTextRequired == true
               ? Text(
                   movie.title,
                   style: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.w600),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

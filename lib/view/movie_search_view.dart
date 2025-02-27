@@ -28,26 +28,36 @@ class MovieSearchView extends GetView<MovieSearchController> {
       body: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(
+            16,
+          ),
           child: Column(
             children: [
               TextField(
                 controller: controller.searchController,
                 decoration: InputDecoration(
                   hintText: 'Search',
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon: Obx(() => controller.searchQuery.value.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: () {
-                            controller.clearSearch();
-                          },
-                        )
-                      : const SizedBox()),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                  ),
+                  suffixIcon: Obx(
+                    () => controller.searchQuery.value.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(
+                              Icons.close,
+                            ),
+                            onPressed: () {
+                              controller.clearSearch();
+                            },
+                          )
+                        : const SizedBox(),
+                  ),
                   floatingLabelBehavior: FloatingLabelBehavior.auto,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: const Color(0xffD0D5DD).withOpacity(0.1),
+                      color: const Color(0xffD0D5DD).withOpacity(
+                        0.1,
+                      ),
                       width: 1.0,
                     ),
                   ),
@@ -64,8 +74,7 @@ class MovieSearchView extends GetView<MovieSearchController> {
                   if (value.length > 2) {
                     controller.onSearchChanged(value);
                   } else {
-                    controller.searchResults
-                        .clear();
+                    controller.searchResults.clear();
                   }
                 },
                 onTapOutside: (PointerDownEvent event) {
@@ -76,12 +85,19 @@ class MovieSearchView extends GetView<MovieSearchController> {
               Expanded(
                 child: Obx(() {
                   if (controller.isLoading.value) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   } else if (controller.searchQuery.value.length > 2 &&
                       controller.searchResults.isEmpty) {
                     return const Center(
-                        child: Text("No data found",
-                            style: TextStyle(fontSize: 18)));
+                      child: Text(
+                        "No data found",
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    );
                   } else {
                     return ListView.builder(
                       itemCount: controller.searchResults.length,
@@ -89,8 +105,14 @@ class MovieSearchView extends GetView<MovieSearchController> {
                         final movie = controller.searchResults[index];
                         return ListTile(
                           title: Text(movie.title),
-                          subtitle: Text(Utils.formatDate(movie.releaseDate)),
-                          trailing: const Icon(Icons.chevron_right),
+                          subtitle: Text(
+                            Utils.formatDate(
+                              movie.releaseDate,
+                            ),
+                          ),
+                          trailing: const Icon(
+                            Icons.chevron_right,
+                          ),
                           onTap: () {
                             Get.toNamed(
                               AppPages.movieDetailPage,

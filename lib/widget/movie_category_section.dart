@@ -20,8 +20,7 @@ class MovieCategorySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double dynamicHeight =
-        posterHeight + (isTextRequired ? 40 : 20);
+    double dynamicHeight = posterHeight + (isTextRequired ? 40 : 20);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -32,20 +31,29 @@ class MovieCategorySection extends StatelessWidget {
           ),
           child: Text(
             title,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         SizedBox(
           height: dynamicHeight,
           child: movies.isEmpty
-              ? const Center(child: Text('No movies available'))
+              ? const Center(
+                  child: Text(
+                    'No movies available',
+                  ),
+                )
               : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: movies.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                      ),
                       child: MovieCard(
                         movie: movies[index],
                         isTextRequired: isTextRequired,
