@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:movieapp/model/custom_movie_model.dart';
-import 'package:movieapp/routes/app_pages.dart';
 import 'package:movieapp/widget/movie_card.dart';
 
 class MovieCategorySection extends StatelessWidget {
@@ -23,7 +21,7 @@ class MovieCategorySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double dynamicHeight =
-        posterHeight + (isTextRequired ? 40 : 20); // 30% of screen height
+        posterHeight + (isTextRequired ? 40 : 20);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

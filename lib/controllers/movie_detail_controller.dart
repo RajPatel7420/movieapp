@@ -76,18 +76,17 @@ class MovieDetailController extends GetxController {
                 : '',
             movieProductionCompanies: movieDetailsModel.value?.productionCompanies
                 ?.map((company) => company.name)
-                .whereType<String>() // Filters out null values
+                .whereType<String>()
                 .toList() ??
                 [],
             movieProductionCountries: movieDetailsModel.value?.productionCountries
                 ?.map((country) => country.name)
-                .whereType<String>() // Filters out null values
+                .whereType<String>()
                 .toList() ??
                 [],
           );
         }
       } else {
-        // Handle API error response
         Get.snackbar(
           "Error ${response.statusCode}",
           "Failed to fetch movie details. Please try again.",
@@ -97,7 +96,6 @@ class MovieDetailController extends GetxController {
         );
       }
     } catch (e) {
-      // Handle network issues, JSON parsing errors, or unexpected failures
       Get.snackbar(
         "Error",
         "Something went wrong while fetching movie details. Please try again later.",

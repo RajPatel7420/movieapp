@@ -1,4 +1,3 @@
-/// bindings/home_binding.dart
 import 'package:get/get.dart';
 import 'package:movieapp/controllers/home_controller.dart';
 

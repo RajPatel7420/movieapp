@@ -85,7 +85,6 @@ class MovieSearchController extends GetxController {
           }
         }
       } else {
-        // Handle API error response
         Get.snackbar(
           "Error ${response.statusCode}",
           "Failed to fetch search results. Please try again.",
@@ -95,7 +94,6 @@ class MovieSearchController extends GetxController {
         );
       }
     } catch (e) {
-      // Handle any errors (network issues, JSON parsing errors, etc.)
       Get.snackbar(
         "Error",
         "Something went wrong while searching. Please try again later.",

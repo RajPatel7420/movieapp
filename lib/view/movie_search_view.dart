@@ -14,7 +14,6 @@ class MovieSearchView extends GetView<MovieSearchController> {
         title: const Text(
           'Movie App',
         ),
-        // backgroundColor: const Color(0xff16275A),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -66,7 +65,7 @@ class MovieSearchView extends GetView<MovieSearchController> {
                     controller.onSearchChanged(value);
                   } else {
                     controller.searchResults
-                        .clear(); // Clear results if less than 3 characters
+                        .clear();
                   }
                 },
                 onTapOutside: (PointerDownEvent event) {

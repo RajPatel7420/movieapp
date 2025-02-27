@@ -1,4 +1,3 @@
-/// models/movie_model.dart
 class CustomMovieModel {
   final int id;
   final String title;

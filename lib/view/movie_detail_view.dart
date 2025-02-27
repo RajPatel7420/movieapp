@@ -13,7 +13,6 @@ class MovieDetailView extends GetView<MovieDetailController> {
           title: const Text(
             'Movie Details',
           ),
-          // backgroundColor: const Color(0xff16275A),
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
